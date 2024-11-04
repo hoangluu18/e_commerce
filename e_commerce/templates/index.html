@@ -7,5 +7,12 @@
 </head>
 <body>
     <h1 class="subject">Hello World</h1>
+
+    <ul>
+        <li><a href="{{ url_for('product_list') }}">Tat ca san pham</a></li>
+        {% for c in categories %}
+            <li><a href="#">{{ c.name }}</a></li>
+        {% endfor %}
+    </ul>
 </body>
 </html>
