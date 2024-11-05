@@ -166,3 +166,6 @@ instance/*
 .webassets-cache
 .env
 
+
+.idea/
+
