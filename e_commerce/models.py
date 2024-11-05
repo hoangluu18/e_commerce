@@ -33,7 +33,7 @@ class Product(BaseModel):
 if __name__ == '__main__':
     with app.app_context():
 
-        #db.create.all()
+        #db.create_all()
 
 
         products = [{
