@@ -1,32 +1,34 @@
-import json, os
-from itertools import product
+import json
 
 from e_commerce import app
-
+from e_commerce.models import Category, Product
 
 def read_json(path):
-     with open(path, 'r') as f:
+    with open(path, 'r') as f:
         return json.load(f)
 
 def load_categories():
-    return read_json(os.path.join(app.root_path,'data/categories.json'))
+    return Category.query.all()
 
-def load_products(cate_id = None, kw = None, from_price = None, to_price = None):
-    products = read_json(os.path.join(app.root_path,'data/products.json'))
+def load_products(cate_id=None, kw=None, from_price=None, to_price=None):
+    # Lọc sản phẩm chỉ khi active = True
+    products = Product.query.filter(Product.active.is_(True))
 
-    if(cate_id):
-        products = [p for p in products if p['category_id'] == int(cate_id)]
-    if(kw):
-        products = [p for p in products if p['name'].lower().find(kw.lower()) >= 0]
-    if(from_price):
-        products = [p for p in products if p['price'] >= float(from_price)]
-    if(to_price):
-        products = [p for p in products if p['price'] <= float(to_price)]
+    # Lọc theo cate_id nếu có
+    if cate_id:
+        products = products.filter(Product.category_id == cate_id)
 
-    return products
+    # Lọc theo từ khóa nếu có
+    if kw:
+        products = products.filter(Product.name.contains(kw))
+
+    # Lọc theo khoảng giá nếu có
+    if from_price is not None:
+        products = products.filter(Product.price >= from_price)
+    if to_price is not None:
+        products = products.filter(Product.price <= to_price)
+
+    return products.all()
 
 def get_product_by_id(product_id):
-    products = read_json(os.path.join(app.root_path, 'data/products.json'))
-    for p in products:
-        if p['id'] == product_id:
-            return p
+    return Product.query.get(product_id)
