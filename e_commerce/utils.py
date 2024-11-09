@@ -1,7 +1,9 @@
 import json
+from zoneinfo import available_timezones
 
-from e_commerce import app
-from e_commerce.models import Category, Product
+from e_commerce import app, db
+from e_commerce.models import Category, Product, User
+import hashlib
 
 def read_json(path):
     with open(path, 'r') as f:
@@ -39,3 +41,13 @@ def count_products():
     return Product.query.filter(Product.active.is_(True)).count()
 def get_product_by_id(product_id):
     return Product.query.get(product_id)
+
+def add_user(name, username, password, **kwargs):
+    password = str(hashlib.md5(password.strip().encode('utf-8')).hexdigest())
+    user = User(name=name.strip(),
+                username=username.strip(),
+                password=password,
+                email=kwargs.get('email'),
+                avatar = kwargs.get('avatar'))
+    db.session.add(user)
+    db.session.commit()
