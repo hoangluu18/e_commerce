@@ -10,7 +10,7 @@ def read_json(path):
 def load_categories():
     return Category.query.all()
 
-def load_products(cate_id=None, kw=None, from_price=None, to_price=None):
+def read_products(cate_id=None, kw=None, from_price=None, to_price=None, page=1):
     # Lọc sản phẩm chỉ khi active = True
     products = Product.query.filter(Product.active.is_(True))
 
@@ -28,7 +28,14 @@ def load_products(cate_id=None, kw=None, from_price=None, to_price=None):
     if to_price is not None:
         products = products.filter(Product.price <= to_price)
 
-    return products.all()
+    page_size = app.config['PAGE_SIZE']
+    start = (page - 1) * page_size
+    end = start + page_size
 
+    return products.slice(start, end).all()
+
+
+def count_products():
+    return Product.query.filter(Product.active.is_(True)).count()
 def get_product_by_id(product_id):
     return Product.query.get(product_id)

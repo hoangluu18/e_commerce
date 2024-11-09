@@ -10,6 +10,7 @@ from wtforms import SelectField
 class ProductView(ModelView):
     can_view_details = True
     can_export = True
+    can_edit = False
     column_filters = ['name', 'price']
     column_searchable_list = ('name', 'description')
     column_list = ('name','description', 'price', 'Image', 'active', 'created_date', 'category')

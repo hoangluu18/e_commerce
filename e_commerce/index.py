@@ -1,3 +1,4 @@
+import math
 import os
 from itertools import product
 
@@ -5,17 +6,21 @@ from e_commerce import app
 from flask import render_template, request
 import utils
 
-from e_commerce.utils import read_json
+from e_commerce.utils import read_json, count_products
 
 
 @app.route('/')
-def home():
+def index():
     cates = utils.load_categories()
     cate_id = request.args.get('category_id')
+    page = request.args.get('page',1)
     kw = request.args.get('keyword')
-    products = utils.load_products(cate_id=cate_id, kw=kw)
+    products = utils.read_products(cate_id=cate_id, kw=kw,page=int(page))
+    counter = utils.count_products()
     return render_template("index.html",
-                           categories=cates, products=products)
+                           categories=cates, products=products, pages=math.ceil(counter/app.config['PAGE_SIZE']))
+
+
 @app.route('/products')
 def product_list():
 
