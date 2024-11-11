@@ -1,10 +1,10 @@
 import math
 
-from e_commerce import app
+from e_commerce import app, login
 from flask import render_template, request, redirect, url_for
 import utils
 import cloudinary.uploader
-
+from flask_login import login_user, logout_user, login_required, current_user
 
 
 @app.route('/')
@@ -43,12 +43,34 @@ def user_register():
 
     return render_template('register.html',err_msg=err_msg)
 
+@app.route('/user-login', methods=['get','post'])
+def user_signin():
+    err_msg = ''
+
+    if request.method.__eq__('POST'):
+        username = request.form.get('username')
+        password = request.form.get('password')
+        user = utils.check_login(username, password)
+        if(user):
+            login_user(user)
+            return redirect(url_for('index'))
+        else:
+            err_msg = 'User hoac Password khong chinh xac'
+    return render_template('login.html', err_msg=err_msg)
+
+@app.route('/user-logout')
+def user_logout():
+    logout_user()
+    return redirect(url_for('user_signin'))
+
 @app.context_processor
 def common_response():
     return {
         'categories': utils.load_categories()
     }
-
+@login.user_loader
+def user_load(user_id):
+    return utils.get_user_by_id(user_id = user_id)
 @app.route('/products')
 def product_list():
 

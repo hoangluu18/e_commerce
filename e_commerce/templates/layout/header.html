@@ -20,9 +20,30 @@
         <a class="nav-link" href="{{ url_for('index', category_id=c.id) }}">{{c.name}}</a>
       </li>
       {% endfor %}
-      <li class="nav-item " >
-        <a class="nav-link text-danger" href="{{ url_for('user_register') }}">Dang ki</a>
+
+      {% if current_user.is_authenticated %}
+      <li class="nav-item">
+        <a class="nav-link text-danger" href="{{url_for('user_register') }}">
+          {% if current_user.avatar %}
+            <img src="{{ current_user.avatar }}" class="rounded-circle" width="30" alt="{{current_user.name}}" />
+          {% else %}
+            <img src="{{ url_for('static', filename = 'images/default.jpg') }}" class="rounded-circle" width="30" alt="{{current_user.name}}" />
+          {% endif %}
+          {{ current_user.username }}
+        </a>
       </li>
+      <li class="nav-item " >
+        <a class="nav-link text-success" href="{{ url_for('user_logout') }}">Dang Xuat</a>
+      </li>
+
+      {% else %}
+      <li class="nav-item " >
+        <a class="nav-link text-success" href="{{ url_for('user_signin') }}">Dang Nhap</a>
+      </li>
+      <li class="nav-item " >
+        <a class="nav-link text-danger" href="{{ url_for('user_register') }}">Dang Ky</a>
+      </li>
+      {% endif %}
     </ul>
   </div>
   <form class="form-inline">

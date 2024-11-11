@@ -4,6 +4,8 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 import cloudinary
+from flask_login import LoginManager
+
 load_dotenv()
 
 app = Flask(__name__)
@@ -21,3 +23,5 @@ cloudinary.config(
     api_key=os.getenv('API_KEY'),
     api_secret=os.getenv('API_SECRET')
 )
+
+login = LoginManager(app = app)

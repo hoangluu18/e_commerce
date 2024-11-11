@@ -2,6 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Boolean, Float, Enum
 from datetime import datetime
 from sqlalchemy.orm import relationship
+from flask_login import UserMixin
 from e_commerce import db
 from e_commerce import app
 from enum import Enum as UserEnum
@@ -15,7 +16,7 @@ class UserRole(UserEnum):
     ADMIN = 1
     USER = 2
 
-class User(BaseModel):
+class User(BaseModel, UserMixin):
     name = Column(String(50), nullable= False)
     username = Column(String(50), nullable= False, unique=True)
     password = Column(String(50), nullable= False)
