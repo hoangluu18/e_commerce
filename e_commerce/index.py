@@ -1,15 +1,12 @@
 import math
-
 from e_commerce import app, login
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, session, jsonify
 import utils
 import cloudinary.uploader
 from flask_login import login_user, logout_user, login_required, current_user
 
-
 @app.route('/')
 def index():
-
     cate_id = request.args.get('category_id')
     page = request.args.get('page',1)
     kw = request.args.get('keyword')
@@ -40,13 +37,11 @@ def user_register():
                 err_msg = 'Mật khẩu không khớp'
         except Exception as ex:
                 err_msg = 'Đăng ký thất bại: ' + str(ex)
-
     return render_template('register.html',err_msg=err_msg)
 
 @app.route('/user-login', methods=['get','post'])
 def user_signin():
     err_msg = ''
-
     if request.method.__eq__('POST'):
         username = request.form.get('username')
         password = request.form.get('password')
@@ -68,19 +63,40 @@ def common_response():
     return {
         'categories': utils.load_categories()
     }
+
 @login.user_loader
 def user_load(user_id):
     return utils.get_user_by_id(user_id = user_id)
+
 @app.route('/products')
 def product_list():
-
     kw = request.args.get('keyword')
     from_price = request.args.get('from_price')
     to_price = request.args.get('to_price')
-
     cate_id = request.args.get('category_id')
     products = utils.load_products(cate_id = cate_id, kw = kw, from_price = from_price, to_price = to_price)
     return render_template("products.html",products=products)
+
+@app.route('/api/add_to_cart', methods=['POST'])
+def add_to_cart():
+    data = request.json
+    id = str(data.get('id'))
+    name = data.get('name')
+    price = data.get('price')
+    cart = session.get('cart')
+    if not cart:
+        cart = {}
+    if id in cart:
+        cart[id]['quantity'] = cart[id]['quantity'] + 1
+    else:
+        cart[id] = {
+            'id': id,
+            'name': name,
+            'price': price,
+            'quantity': 1
+        }
+    session['cart'] = cart
+    return jsonify(utils.count_cart(cart))
 
 @app.route("/products/<int:product_id>")
 def product_detail(product_id):

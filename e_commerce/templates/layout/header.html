@@ -20,7 +20,6 @@
         <a class="nav-link" href="{{ url_for('index', category_id=c.id) }}">{{c.name}}</a>
       </li>
       {% endfor %}
-
       {% if current_user.is_authenticated %}
       <li class="nav-item">
         <a class="nav-link text-danger" href="{{url_for('user_register') }}">
@@ -35,7 +34,6 @@
       <li class="nav-item " >
         <a class="nav-link text-success" href="{{ url_for('user_logout') }}">Dang Xuat</a>
       </li>
-
       {% else %}
       <li class="nav-item " >
         <a class="nav-link text-success" href="{{ url_for('user_signin') }}">Dang Nhap</a>
@@ -44,6 +42,11 @@
         <a class="nav-link text-danger" href="{{ url_for('user_register') }}">Dang Ky</a>
       </li>
       {% endif %}
+      <li>
+        <a class="nav-link text-success" href="#" >
+          Gio Hang <span class="badge badge-info" id="cartCounter">0</span>
+        </a>
+      </li>
     </ul>
   </div>
   <form class="form-inline">
