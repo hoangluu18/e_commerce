@@ -1,6 +1,6 @@
 function add_to_cart(event, id, name, price) {
     event.preventDefault();
-    fetch('/api/add-cart', {
+    fetch('/api/add_to_cart', {
         method: 'post',
         body: JSON.stringify({
             'id': id,
