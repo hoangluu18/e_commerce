@@ -4,7 +4,7 @@ from zoneinfo import available_timezones
 from flask_login import current_user
 
 from e_commerce import app, db
-from e_commerce.models import Category, Product, User, Receipt, ReceiptDetail
+from e_commerce.models import Category, Product, User, Receipt, ReceiptDetail, UserRole
 import hashlib
 
 def read_json(path):
@@ -55,10 +55,10 @@ def add_user(name, username, password, **kwargs):
     db.session.commit()
 
 
-def check_login(username, password):
+def check_login(username, password, role=UserRole.USER):
     if username and password:
         password = str(hashlib.md5(password.strip().encode('utf-8')).hexdigest())
-        return User.query.filter(User.username.__eq__(username.strip()), User.password.__eq__(password)).first()
+        return User.query.filter(User.username.__eq__(username.strip()), User.password.__eq__(password), User.user_role.__eq__(role)).first()
 
 def get_user_by_id(user_id):
     return User.query.get(user_id)

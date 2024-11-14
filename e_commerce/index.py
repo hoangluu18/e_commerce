@@ -7,6 +7,9 @@ import utils
 import cloudinary.uploader
 from flask_login import login_user, logout_user, login_required, current_user
 
+from e_commerce.models import UserRole
+
+
 @app.route('/')
 def index():
     cate_id = request.args.get('category_id')
@@ -55,6 +58,15 @@ def user_signin():
         else:
             err_msg = 'User hoac Password khong chinh xac'
     return render_template('login.html', err_msg=err_msg)
+
+@app.route('/admin-login', methods=['post'])
+def admin_login():
+    username = request.form.get('username')
+    password = request.form.get('password')
+    user = utils.check_login(username=username, password=password,role=UserRole.ADMIN)
+    if (user):
+        login_user(user)
+    return redirect('/admin')
 
 @app.route('/user-logout')
 def user_logout():
