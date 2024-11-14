@@ -43,8 +43,8 @@
       </li>
       {% endif %}
       <li>
-        <a class="nav-link text-success" href="#" >
-          Gio Hang <span class="badge badge-info" id="cartCounter">0</span>
+        <a class="nav-link text-success" href="{{ url_for('cart') }}" >
+          Gio Hang <span class="badge badge-info" id="cartCounter">{{ cart_stats.total_quantity }}</span>
         </a>
       </li>
     </ul>

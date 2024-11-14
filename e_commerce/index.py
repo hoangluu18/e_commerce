@@ -1,4 +1,6 @@
 import math
+from crypt import methods
+
 from e_commerce import app, login
 from flask import render_template, request, redirect, url_for, session, jsonify
 import utils
@@ -48,7 +50,8 @@ def user_signin():
         user = utils.check_login(username, password)
         if(user):
             login_user(user)
-            return redirect(url_for('index'))
+            next = request.args.get('next', 'index')
+            return redirect(url_for(next))
         else:
             err_msg = 'User hoac Password khong chinh xac'
     return render_template('login.html', err_msg=err_msg)
@@ -61,7 +64,8 @@ def user_logout():
 @app.context_processor
 def common_response():
     return {
-        'categories': utils.load_categories()
+        'categories': utils.load_categories(),
+        'cart_stats': utils.count_cart(session.get('cart'))
     }
 
 @login.user_loader
@@ -76,6 +80,10 @@ def product_list():
     cate_id = request.args.get('category_id')
     products = utils.load_products(cate_id = cate_id, kw = kw, from_price = from_price, to_price = to_price)
     return render_template("products.html",products=products)
+
+@app.route('/cart')
+def cart():
+    return render_template("cart.html", stats=utils.count_cart(session.get('cart')))
 
 @app.route('/api/add_to_cart', methods=['POST'])
 def add_to_cart():
@@ -102,6 +110,17 @@ def add_to_cart():
 def product_detail(product_id):
     product = utils.get_product_by_id(product_id)
     return render_template('product_detail.html',product=product)
+
+@app.route('/api/pay', methods=['post'])
+@login_required
+def pay():
+    try:
+        utils.add_receipt(session.get('cart'))
+        del session['cart']
+    except:
+        return jsonify({'code': 400})
+
+    return jsonify({'code': 200})
 
 if __name__ == '__main__':
     from e_commerce.admin import *

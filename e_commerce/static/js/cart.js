@@ -21,3 +21,15 @@ function add_to_cart(event, id, name, price) {
         console.error(err)
     })
 }
+
+function pay(){
+    if (confirm('Ban chac chan muon thanh toan khong?') == true){
+        fetch('/api/pay', {
+            method: 'post',
+
+        }).then(res => res.json()).then( data => {
+            if (data.code == 200)
+                location.reload()
+        }).catch(err => console.error(err))
+    }
+}
