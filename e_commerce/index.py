@@ -1,5 +1,5 @@
 import math
-from crypt import methods
+
 
 from e_commerce import app, login
 from flask import render_template, request, redirect, url_for, session, jsonify

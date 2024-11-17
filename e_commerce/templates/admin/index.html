@@ -3,6 +3,29 @@
 {% block body %}
 {% if current_user.is_authenticated %}
 <h1>Welcome {{ current_user.name }} To Administration Website!</h1>
+<div class="row">
+    <div class="col-md-5 col-xs-12">
+        <table class="table">
+    <tr>
+        <th>Ma Danh Muc</th>
+        <th>Ten Danh Muc</th>
+        <th>So Luong San Pham</th>
+    </tr>
+    {% for s in stats %}
+    <tr>
+        <td>{{ s[0] }}</td>
+        <td>{{ s[1] }}</td>
+        <td>{{ s[2] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+    </div>
+    <div class="col-md-6 col-xs-12">
+        <canvas id="myCategory_chart"></canvas>
+
+    </div>
+</div>
+
 {% else %}
 <h1 class="text-center text-black">ADMINISTRATION LOGIN</h1>
 <form method="post" action="{{ url_for('admin_login') }}">
@@ -18,4 +41,44 @@
 
 </form>
 {% endif %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    let labels = [], infor = []
+    let colors = [], borderColors = []
+    let r, g, b;
+    {% for s in stats %}
+        labels.push('{{s[1]}}')
+        infor.push('{{s[2]}}')
+
+        r = Math.random()*255
+        g = Math.random()*255
+        b = Math.random()*255
+
+        colors.push(`rgba(${r},${g}, ${b}, 0.2)`)
+        borderColors.push(`rgba(${r},${g}, ${b}, 1)`)
+    {% endfor %}
+    window.onload = function() {
+        const ctx = document.getElementById('myCategory_chart').getContext('2d')
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+              labels: labels,
+              datasets: [{
+                label: 'Thong Ke San Pham Theo Loai',
+                data: infor,
+                backgroundColor: colors,
+                borderColors: borderColors,
+                borderWidth: 1
+              }]
+            },
+            options: {
+              scales: {
+                y: {
+                  beginAtZero: true
+                }
+              }
+            }
+          });
+    }
+</script>
 {% endblock %}

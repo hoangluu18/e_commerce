@@ -1,10 +1,11 @@
 from e_commerce import app, db
 from e_commerce.models import Category, Product, UserRole
-from flask_admin import Admin, expose
+from flask_admin import Admin, expose, AdminIndexView
 from flask_admin import BaseView
 from flask_admin.contrib.sqla import ModelView
 from wtforms import SelectField
 from flask_login import current_user, logout_user
+import utils
 from flask import redirect
 from flask import current_app
 
@@ -46,7 +47,12 @@ class LogoutView(BaseView):
     def is_accessible(self):
         return current_user.is_authenticated
 
-admin = Admin(app=app, name='E-commerce Administration', template_mode='bootstrap4')
+class MyAdminIndexView(AdminIndexView):
+    @expose('/')
+    def index(self):
+        return self.render('admin/index.html', stats = utils.category_stats())
+
+admin = Admin(app=app, name='E-commerce Administration', template_mode='bootstrap4', index_view=MyAdminIndexView())
 admin.add_view(AuthenticatedModelView(Category, db.session))
 admin.add_view(ProductView(Product, db.session))
 admin.add_view(LogoutView(name='Logout', endpoint='/logout'))

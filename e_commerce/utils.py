@@ -5,6 +5,7 @@ from flask_login import current_user
 
 from e_commerce import app, db
 from e_commerce.models import Category, Product, User, Receipt, ReceiptDetail, UserRole
+from sqlalchemy import func
 import hashlib
 
 def read_json(path):
@@ -85,3 +86,8 @@ def add_receipt(cart):
             db.session.add(d)
 
         db.session.commit()
+
+
+def category_stats():
+    return db.session.query(Category.id, Category.name, func.count(Product.id))\
+        .join(Product, Category.id.__eq__(Product.category_id), isouter=True).group_by(Category.id, Category.name).all()
