@@ -1,3 +1,5 @@
+from urllib import request
+
 from e_commerce import app, db
 from e_commerce.models import Category, Product, UserRole
 from flask_admin import Admin, expose, AdminIndexView
@@ -7,6 +9,7 @@ from wtforms import SelectField
 from flask_login import current_user, logout_user
 import utils
 from flask import redirect
+from flask import request
 from flask import current_app
 
 class AuthenticatedModelView(ModelView):
@@ -47,6 +50,16 @@ class LogoutView(BaseView):
     def is_accessible(self):
         return current_user.is_authenticated
 
+class StatsView(BaseView):
+    @expose('/')
+    def __index__(self):
+        kw = request.args.get('kw')
+        from_date = request.args.get('from_date')
+        to_date = request.args.get('to_date')
+        return self.render('admin/stats.html', stats = utils.product_stats(kw = kw, from_date = from_date, to_date = to_date))
+    def is_accessible(self):
+        return current_user.is_authenticated and current_user.user_role == UserRole.ADMIN
+
 class MyAdminIndexView(AdminIndexView):
     @expose('/')
     def index(self):
@@ -56,3 +69,4 @@ admin = Admin(app=app, name='E-commerce Administration', template_mode='bootstra
 admin.add_view(AuthenticatedModelView(Category, db.session))
 admin.add_view(ProductView(Product, db.session))
 admin.add_view(LogoutView(name='Logout', endpoint='/logout'))
+admin.add_view(StatsView(name='Stats', endpoint='/stats'))

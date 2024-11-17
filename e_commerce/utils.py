@@ -91,3 +91,16 @@ def add_receipt(cart):
 def category_stats():
     return db.session.query(Category.id, Category.name, func.count(Product.id))\
         .join(Product, Category.id.__eq__(Product.category_id), isouter=True).group_by(Category.id, Category.name).all()
+
+def product_stats(kw = None, from_date = None, to_date = None):
+    p = db.session.query(Product.id, Product.name, func.sum(ReceiptDetail.quantity * ReceiptDetail.unit_price))\
+            .join(ReceiptDetail, ReceiptDetail.product_id.__eq__(Product.id), isouter=True)\
+            .join(Receipt, Receipt.id.__eq__(ReceiptDetail.receipt_id))\
+            .group_by(Product.id, Product.name)
+    if kw:
+       p = p.filter(Product.name.contains(kw))
+    if from_date:
+        p = p.filter(Receipt.created_date.__ge__(from_date))
+    if to_date:
+        p = p.filter(Receipt.created_date.__le__(to_date))
+    return p.all()

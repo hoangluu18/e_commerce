@@ -1,0 +1,93 @@
+{% extends 'admin/base.html' %}
+
+{% block body %}
+<h1 class="text-center text-danger"> THONG KE DANH THU</h1>
+<div class="row">
+    <div class="col-md-5 col-xl-12">
+        <table class="table">
+            <tr>
+                <th>MA SAN PHAM</th>
+                <th>TEN SAN PHAM</th>
+                <th>DOANH THU</th>
+            </tr>
+            {% for s in stats %}
+            <tr>
+                <th>{{ s[0] }}</th>
+                <th>{{ s[1] }}</th>
+                <th>
+                    {% if s[2] %}
+                    {{ "{:,.1f}".format(s[2]) }} VND
+                    {% else %}
+                    0 VND
+                    {% endif %}
+                </th>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class ="col-md-5 col-xl-12">
+        <form action="">
+            <div class="form-group">
+                <input type="text" class="form-control" name="kw" placeholder="Nhap tu khoa"/>
+
+            </div>
+            <div class="form-group">
+                <input type="date" class="form-control" name="from_date" />
+
+            </div>
+            <div class="form-group">
+                <input type="date" class="form-control" name="to_date" />
+
+            </div>
+            <input type="submit" value="Thong Ke" class="btn btn-info">
+        </form>
+        <canvas id = "productChartId"></canvas>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    let labels = [], infor = []
+    let colors = [], borderColors = []
+    let r, g, b;
+    {% for s in stats %}
+    {% if s[2] %}
+        labels.push('{{s[1]}}')
+        infor.push('{{s[2]}}')
+
+        r = Math.random()*255
+        g = Math.random()*255
+        b = Math.random()*255
+
+        colors.push(`rgba(${r},${g}, ${b}, 0.2)`)
+        borderColors.push(`rgba(${r},${g}, ${b}, 1)`)
+    {% endif %}
+    {% endfor %}
+    window.onload = function() {
+        const ctx = document.getElementById('productChartId').getContext('2d')
+        loadChart(ctx, labels, infor, 'bar', colors, borderColors)
+    }
+function loadChart(ctx, labels, infor, type, colors, borderColors) {
+        new Chart(ctx, {
+            type: type,
+            data: {
+              labels: labels,
+              datasets: [{
+                label: 'Thong Ke Doanh Thu ',
+                data: infor,
+                backgroundColor: colors,
+                borderColors: borderColors,
+                borderWidth: 1
+              }]
+            },
+            options: {
+              scales: {
+                y: {
+                  beginAtZero: true
+                }
+              }
+            }
+          });
+}
+</script>
+
+{% endblock %}
