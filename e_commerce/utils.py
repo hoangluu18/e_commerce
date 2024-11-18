@@ -5,7 +5,7 @@ from flask_login import current_user
 
 from e_commerce import app, db
 from e_commerce.models import Category, Product, User, Receipt, ReceiptDetail, UserRole
-from sqlalchemy import func
+from sqlalchemy import func, extract
 import hashlib
 
 def read_json(path):
@@ -104,3 +104,10 @@ def product_stats(kw = None, from_date = None, to_date = None):
     if to_date:
         p = p.filter(Receipt.created_date.__le__(to_date))
     return p.all()
+
+def product_month_stats(year):
+    return db.session.query(extract('month',Receipt.created_date), func.sum(ReceiptDetail.quantity * ReceiptDetail.unit_price))\
+        .join(ReceiptDetail, ReceiptDetail.receipt_id.__eq__(Receipt.id))\
+        .filter(extract('year', Receipt.created_date) == year)\
+        .group_by(extract('month', Receipt.created_date))\
+        .order_by(extract('month', Receipt.created_date)).all()
