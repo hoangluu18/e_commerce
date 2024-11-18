@@ -1,3 +1,5 @@
+from datetime import datetime
+from http.cookiejar import month
 from urllib import request
 
 from e_commerce import app, db
@@ -56,7 +58,11 @@ class StatsView(BaseView):
         kw = request.args.get('kw')
         from_date = request.args.get('from_date')
         to_date = request.args.get('to_date')
-        return self.render('admin/stats.html', stats = utils.product_stats(kw = kw, from_date = from_date, to_date = to_date))
+        year = request.args.get('year',datetime.now().year)
+
+        return self.render('admin/stats.html',
+                           month_stats = utils.product_month_stats(year = year),
+                           stats = utils.product_stats(kw = kw, from_date = from_date, to_date = to_date))
     def is_accessible(self):
         return current_user.is_authenticated and current_user.user_role == UserRole.ADMIN
 
