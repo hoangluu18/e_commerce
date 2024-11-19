@@ -2,12 +2,9 @@ import math
 
 
 from e_commerce import app, login
-from flask import render_template, request, redirect, url_for, session, jsonify
-import utils
+from flask import render_template, url_for, session, jsonify
 import cloudinary.uploader
-from flask_login import login_user, logout_user, login_required, current_user
-
-from e_commerce.models import UserRole
+from flask_login import login_user, login_required
 
 
 @app.route('/')
@@ -116,6 +113,18 @@ def add_to_cart():
             'quantity': 1
         }
     session['cart'] = cart
+    return jsonify(utils.count_cart(cart))
+
+@app.route('/api/update_cart', methods=['PUT'])
+def update_cart():
+    data = request.json
+    id = str(data.get('id'))
+    quantity = data.get('quantity')
+
+    cart = session.get('cart')
+    if cart and id in cart:
+        cart[id]['quantity'] = quantity
+        session['cart'] = cart
     return jsonify(utils.count_cart(cart))
 
 @app.route("/products/<int:product_id>")
