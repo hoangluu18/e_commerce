@@ -84,3 +84,37 @@ function deleteCart(id) {
     }
 
 }
+
+function addComment(productId){
+    let content = document.getElementById('commentId')
+    if (content !== null){
+        fetch('/api/comments',{
+            method: 'post',
+            body: JSON.stringify({
+                'product_id': productId,
+                'content': content.value
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(res => res.json()).then(data =>{
+            if (data.status == 201){
+                let c = data.comment
+                let area = document.getElementById('commentArea')
+                area.innerHTML = `
+                    <div class="row">
+                        <div class="col-md-1 col-xs-4">
+                            <img src="${c.user.avatar}" alt="demo" class="img-fluid rounded-circle">
+                        </div>
+                        <div class="col-md-11 col-xs-8">
+                            <p>${c.content}</p>
+                            <p><em>${c.created_date}</em></p>
+                        </div>
+                   </div>
+                ` + area.innerHTML
+            }else  if (data.status == 404){
+                alert(data.err_msg)
+            }
+        })
+    }
+}

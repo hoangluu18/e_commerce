@@ -6,6 +6,8 @@ from flask import render_template, url_for, session, jsonify
 import cloudinary.uploader
 from flask_login import login_user, login_required
 
+from e_commerce.models import Comment
+
 
 @app.route('/')
 def index():
@@ -16,6 +18,7 @@ def index():
     counter = utils.count_products()
     return render_template("index.html",
                             products=products, pages=math.ceil(counter/app.config['PAGE_SIZE']))
+
 
 @app.route('/register', methods=['get','post'])
 def user_register():
@@ -93,6 +96,21 @@ def product_list():
 @app.route('/cart')
 def cart():
     return render_template("cart.html", stats=utils.count_cart(session.get('cart')))
+
+@app.route('/api/comments', methods=['post'])
+@login_required
+def add_comment():
+    data = request.json
+    product_id = data.get('product_id')
+    content = data.get('content')
+    try:
+        c = utils.add_comment(content=content, product_id=product_id)
+    except:
+        return {'status': 404, 'err_msg': 'Chuong trinh dang bi loi'}
+    return {'status': 201, 'comment': {'id': c.id, 'content': c.content, 'created_date': c.created_date, 'user': {
+        'username': current_user.username,
+        'avatar': current_user.avatar
+    }}}
 
 @app.route('/api/add_to_cart', methods=['POST'])
 def add_to_cart():

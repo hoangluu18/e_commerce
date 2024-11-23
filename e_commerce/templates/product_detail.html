@@ -1,22 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Chi tiet san pham</title>
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css')}}">
-</head>
-<body>
-    <h1 class="subject">Chi tiet san pham</h1>
-    <div class="container flex ">
-        <div>
-            <img src="{{url_for('static', filename = product.image) }}" alt = "{{product.name}}">
-        </div>
-
-        <div>
-            <h2>{{product.name}}</h2>
-            <p> {{product.description}}</p>
-            <h4>{{"{:,.1f}".format(product.price)}} VND</h4>
-        </div>
+{% extends 'layout/base.html' %}
+{% block title %} Thi tiet san pham {% endblock %}
+{% block content %}
+<h1 class="text-center text-info">{{ product.name }}</h1>
+<div class="container flex ">
+    <div>
+        <img src="{{url_for('static', filename = product.image) }}" alt = "{{product.name}}">
     </div>
-</body>
-</html>
+    <div>
+        <h2>{{product.name}}</h2>
+        <p> {{product.description}}</p>
+        <h4>{{"{:,.1f}".format(product.price)}} VND</h4>
+    </div>
+</div>
+<hr>
+{% if current_user.is_authenticated %}
+<div>
+    <div class="form-group">
+        <textarea class="form-control" id="commentId" placeholder="Nhao noi dung binh luan..."></textarea>
+    </div>
+    <input type="button" onclick="addComment({{ product.id }})" class="btn btn-primary" value="Binh luan"/>
+</div>
+{% else %}
+<a href="{{ url_for('user_signin') }}" >Dang nhap de binh luan!!</a>
+{% endif %}
+<br>
+<div id="commentArea">
+   <div class="row">
+        <div class="col-md-1 col-xs-4">
+            <img src="{{url_for('static', filename='images/default.jpg')}}" alt="demo" class="img-fluid rounded-circle">
+        </div>
+        <div class="col-md-11 col-xs-8">
+            <p></p>
+            <p><em></em></p>
+        </div>
+   </div>
+</div>
+
+{% endblock %}
