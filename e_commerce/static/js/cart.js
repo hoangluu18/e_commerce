@@ -61,3 +61,26 @@ function updateCart(id, obj) {
         ).catch(err => console.error(err))
 
 }
+function deleteCart(id) {
+    if(confirm("Ban chac chan muon xoa san pham nay khong?") == true){
+        fetch('/api/delete-cart/' + id, {
+            method: 'delete',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(res => res.json()).then(
+            data => {
+                let counter = document.getElementsByClassName('cart-counter')
+                for (let i = 0; i < counter.length; i++) {
+                    counter[i].innerText = data.total_quantity
+                }
+
+                let amount = document.getElementById('total-amount')
+                amount.innerText = new Intl.NumberFormat().format(data.total_amount)
+                let e = document.getElementById("product" + id)
+                e.style.display = 'none'
+            }
+            ).catch(err => console.error(err))
+    }
+
+}

@@ -1,5 +1,5 @@
 import math
-
+from crypt import methods
 
 from e_commerce import app, login
 from flask import render_template, url_for, session, jsonify
@@ -131,6 +131,14 @@ def update_cart():
 def product_detail(product_id):
     product = utils.get_product_by_id(product_id)
     return render_template('product_detail.html',product=product)
+
+@app.route("/api/delete-cart/<product_id>", methods=['delete'])
+def delete(product_id):
+    cart = session.get('cart')
+    if cart and product_id in cart:
+        del cart[product_id]
+        session['cart'] = cart
+    return jsonify(utils.count_cart(cart))
 
 @app.route('/api/pay', methods=['post'])
 @login_required
