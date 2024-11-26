@@ -1,5 +1,5 @@
 import math
-from crypt import methods
+
 
 from e_commerce import app, login
 from flask import render_template, url_for, session, jsonify
@@ -148,7 +148,14 @@ def update_cart():
 @app.route("/products/<int:product_id>")
 def product_detail(product_id):
     product = utils.get_product_by_id(product_id)
-    return render_template('product_detail.html',product=product)
+    page = int(request.args.get('page', 1))
+    comments = utils.get_comments(product_id=product_id, page=page)
+    # comments = utils.get_comments(product_id= product_id, page = request.args.get('page', 1))
+    return render_template('product_detail.html',
+                           comments = comments,
+                           product_id = product_id,
+                           product = product,
+                           pages=math.ceil(utils.count_comments(product_id = product_id)/ app.config['COMMENT_SIZE']))
 
 @app.route("/api/delete-cart/<product_id>", methods=['delete'])
 def delete(product_id):
