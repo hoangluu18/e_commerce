@@ -13,6 +13,7 @@ import utils
 from flask import redirect
 from flask import request
 from flask import current_app
+from email.mime import application
 
 class AuthenticatedModelView(ModelView):
     def is_accessible(self):
@@ -76,3 +77,8 @@ admin.add_view(AuthenticatedModelView(Category, db.session))
 admin.add_view(ProductView(Product, db.session))
 admin.add_view(LogoutView(name='Logout', endpoint='/logout'))
 admin.add_view(StatsView(name='Stats', endpoint='/stats'))
+
+
+if __name__ == '__main__':
+
+   application.run(debug=True)

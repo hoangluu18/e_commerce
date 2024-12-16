@@ -3,12 +3,10 @@ import math
 
 from e_commerce import app, login
 from flask import render_template, request, redirect, url_for, session, jsonify
-import utils
 import cloudinary.uploader
 from flask_login import login_user, logout_user, login_required, current_user
-
 from e_commerce.models import UserRole
-
+from e_commerce import utils
 
 @app.route('/')
 def index():
@@ -67,6 +65,7 @@ def admin_login():
     if (user):
         login_user(user)
     return redirect('/admin')
+
 
 @app.route('/user-logout')
 def user_logout():

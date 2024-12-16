@@ -67,35 +67,57 @@ class ReceiptDetail(db.Model):
 
 if __name__ == '__main__':
     with app.app_context():
-
-
+        # Tạo tất cả các bảng
         db.create_all()
 
+        # Thêm dữ liệu mẫu vào bảng Category
+        categories = [
+            {"id": 1, "name": "Smartphone"},
+            {"id": 2, "name": "Tablet"}
+        ]
 
-        # products = [{
-        # "id": 1,
-        # "name": "iPhone 7 Plus",
-        # "description": "Apple, 32GB, RAM: 3GB, iOS13",
-        # "price": 17000000,
-        # "image": "images/p1.png",
-        # "category_id": 1
-        # }, {
-        # "id": 2,
-        # "name": "iPad Pro 2020",
-        # "description": "Apple, 128GB, RAM: 6GB",
-        # "price": 37000000,
-        #     "image": "images/p2.png",
-        # "category_id": 2
-        # }, {
-        # "id": 3,
-        # "name": "Galaxy Note 10 Plus",
-        # "description": "Samsung, 64GB, RAML: 6GB",
-        # "price": 24000000,
-        # "image": "images/p3.png",
-        # "category_id": 1
-        # }]
-        # for p in products:
-        #     pro = Product(name = p['name'], price = p['price'], image = p['image'],description = p['description'] , category_id = p['category_id'])
-        #     db.session.add(pro)
-        #
-        # db.session.commit()
+        for c in categories:
+            category = Category(id=c['id'], name=c['name'])
+            db.session.add(category)
+
+        # Thêm dữ liệu mẫu vào bảng Product
+        products = [
+            {
+                "id": 1,
+                "name": "iPhone 7 Plus",
+                "description": "Apple, 32GB, RAM: 3GB, iOS13",
+                "price": 17000000,
+                "image": "images/p1.png",
+                "category_id": 1
+            },
+            {
+                "id": 2,
+                "name": "iPad Pro 2020",
+                "description": "Apple, 128GB, RAM: 6GB",
+                "price": 37000000,
+                "image": "images/p2.png",
+                "category_id": 2
+            },
+            {
+                "id": 3,
+                "name": "Galaxy Note 10 Plus",
+                "description": "Samsung, 64GB, RAM: 6GB",
+                "price": 24000000,
+                "image": "images/p3.png",
+                "category_id": 1
+            }
+        ]
+
+        for p in products:
+            product = Product(
+                name=p['name'],
+                price=p['price'],
+                image=p['image'],
+                description=p['description'],
+                category_id=p['category_id']
+            )
+            db.session.add(product)
+
+        # Lưu thay đổi vào cơ sở dữ liệu
+        db.session.commit()
+        print("Dữ liệu đã được thêm thành công!")
