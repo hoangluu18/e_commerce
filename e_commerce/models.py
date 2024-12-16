@@ -1,4 +1,3 @@
-from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Boolean, Float, Enum
 from datetime import datetime
 from sqlalchemy.orm import relationship
@@ -26,6 +25,7 @@ class User(BaseModel, UserMixin):
     joined_date = Column(DateTime, default=datetime.now())
     user_role = Column(Enum(UserRole), default=UserRole.USER)
     receipts = relationship('Receipt', backref='user', lazy=True)
+    comments = relationship('Comment', backref='user', lazy=True)
 
     def __str__(self):
         return self.name
@@ -61,6 +61,7 @@ class Product(BaseModel):
     battery = Column(String(50))
 
     receipt_details = relationship("ReceiptDetail", backref="product", lazy=True)
+    comments = relationship("Comment", backref="product", lazy=True)
 
     def __str__(self):
         return self.name
@@ -75,60 +76,46 @@ class ReceiptDetail(db.Model):
     quantity = Column(Integer, default=0)
     unit_price = Column(Float, default=0)
 
+class Comment(BaseModel):
+    content = Column(String(255), nullable=False)
+    product_id = Column(Integer, ForeignKey(Product.id), nullable=False)
+    user_id = Column(Integer, ForeignKey(User.id), nullable=False)
+    created_date = Column(DateTime, default=datetime.now())
+    def __str__(self):
+        return self.content
+
 
 if __name__ == '__main__':
     with app.app_context():
-        # Tạo tất cả các bảng
+
+
         db.create_all()
 
-        # Thêm dữ liệu mẫu vào bảng Category
-        categories = [
-            {"id": 1, "name": "Smartphone"},
-            {"id": 2, "name": "Tablet"}
-        ]
 
-        for c in categories:
-            category = Category(id=c['id'], name=c['name'])
-            db.session.add(category)
-
-        # Thêm dữ liệu mẫu vào bảng Product
-        products = [
-            {
-                "id": 1,
-                "name": "iPhone 7 Plus",
-                "description": "Apple, 32GB, RAM: 3GB, iOS13",
-                "price": 17000000,
-                "image": "images/p1.png",
-                "category_id": 1
-            },
-            {
-                "id": 2,
-                "name": "iPad Pro 2020",
-                "description": "Apple, 128GB, RAM: 6GB",
-                "price": 37000000,
-                "image": "images/p2.png",
-                "category_id": 2
-            },
-            {
-                "id": 3,
-                "name": "Galaxy Note 10 Plus",
-                "description": "Samsung, 64GB, RAM: 6GB",
-                "price": 24000000,
-                "image": "images/p3.png",
-                "category_id": 1
-            }
-        ]
-
-        for p in products:
-            product = Product(
-                name=p['name'],
-                price=p['price'],
-                image=p['image'],
-                description=p['description'],
-                category_id=p['category_id']
-            )
-            db.session.add(product)
-
-        # Lưu thay đổi vào cơ sở dữ liệu
-        db.session.commit()
-        print("Dữ liệu đã được thêm thành công!")
+        # products = [{
+        # "id": 1,
+        # "name": "iPhone 7 Plus",
+        # "description": "Apple, 32GB, RAM: 3GB, iOS13",
+        # "price": 17000000,
+        # "image": "images/p1.png",
+        # "category_id": 1
+        # }, {
+        # "id": 2,
+        # "name": "iPad Pro 2020",
+        # "description": "Apple, 128GB, RAM: 6GB",
+        # "price": 37000000,
+        #     "image": "images/p2.png",
+        # "category_id": 2
+        # }, {
+        # "id": 3,
+        # "name": "Galaxy Note 10 Plus",
+        # "description": "Samsung, 64GB, RAML: 6GB",
+        # "price": 24000000,
+        # "image": "images/p3.png",
+        # "category_id": 1
+        # }]
+        # for p in products:
+        #     pro = Product(name = p['name'], price = p['price'], image = p['image'],description = p['description'] , category_id = p['category_id'])
+        #     db.session.add(pro)
+        #
+        # db.session.commit()

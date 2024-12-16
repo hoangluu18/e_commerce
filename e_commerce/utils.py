@@ -1,6 +1,5 @@
 import json
-from zoneinfo import available_timezones
-
+from models import Comment
 from flask_login import current_user
 
 from e_commerce import app, db

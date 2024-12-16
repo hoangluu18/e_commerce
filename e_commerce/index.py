@@ -2,11 +2,11 @@ import math
 
 
 from e_commerce import app, login
-from flask import render_template, request, redirect, url_for, session, jsonify
+from flask import render_template, url_for, session, jsonify
 import cloudinary.uploader
-from flask_login import login_user, logout_user, login_required, current_user
-from e_commerce.models import UserRole
-from e_commerce import utils
+from flask_login import login_user, login_required
+from e_commerce.models import  Comment
+
 
 @app.route('/')
 def index():

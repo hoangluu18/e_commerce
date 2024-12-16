@@ -1,18 +1,15 @@
 from datetime import datetime
-from http.cookiejar import month
 from urllib import request
 
 from e_commerce import app, db
-from e_commerce.models import Category, Product, UserRole
+from e_commerce.models import Product, UserRole
 from flask_admin import Admin, expose, AdminIndexView
 from flask_admin import BaseView
 from flask_admin.contrib.sqla import ModelView
-from wtforms import SelectField
 from flask_login import current_user, logout_user
 import utils
 from flask import redirect
 from flask import request
-from flask import current_app
 from email.mime import application
 
 class AuthenticatedModelView(ModelView):
