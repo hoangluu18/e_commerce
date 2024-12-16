@@ -2,10 +2,9 @@ import json
 from zoneinfo import available_timezones
 
 from flask_login import current_user
-from sqlalchemy.testing.suite.test_reflection import users
 
 from e_commerce import app, db
-from e_commerce.models import Category, Product, User, Receipt, ReceiptDetail, UserRole, Comment
+from e_commerce.models import Category, Product, User, Receipt, ReceiptDetail, UserRole
 from sqlalchemy import func, extract
 import hashlib
 
@@ -112,19 +111,3 @@ def product_month_stats(year):
         .filter(extract('year', Receipt.created_date) == year)\
         .group_by(extract('month', Receipt.created_date))\
         .order_by(extract('month', Receipt.created_date)).all()
-
-def add_comment(content, product_id):
-    c = Comment(content=content, product_id=product_id, user=current_user)
-    db.session.add(c)
-    db.session.commit()
-    return c
-
-
-def get_comments(product_id, page = 1):
-    page_size = app.config['COMMENT_SIZE']
-    start = (page - 1) * page_size
-    return Comment.query.filter(Comment.product_id.__eq__(product_id))\
-            .order_by(-Comment.id).slice(start, start + page_size).all()
-
-def count_comments(product_id):
-    return Comment.query.filter(Comment.product_id.__eq__(product_id)).count()

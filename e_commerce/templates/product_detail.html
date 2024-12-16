@@ -1,62 +1,22 @@
-{% extends 'layout/base.html' %}
-{% block title %} Thi tiet san pham {% endblock %}
-{% block content %}
-<h1 class="text-center text-info">{{ product.name }}</h1>
-<div class="container flex ">
-    <div>
-        <img src="{{url_for('static', filename = product.image) }}" alt = "{{product.name}}">
-    </div>
-    <div>
-        <h2>{{product.name}}</h2>
-        <p> {{product.description}}</p>
-        <h4>{{"{:,.1f}".format(product.price)}} VND</h4>
-    </div>
-</div>
-<hr>
-{% if current_user.is_authenticated %}
-<div>
-    <div class="form-group">
-        <textarea class="form-control" id="commentId" placeholder="Nhao noi dung binh luan..."></textarea>
-    </div>
-    <input type="button" onclick="addComment({{ product.id }})" class="btn btn-primary" value="Binh luan"/>
-</div>
-{% else %}
-<a href="{{ url_for('user_signin') }}" >Dang nhap de binh luan!!</a>
-{% endif %}
-<br>
-<div id="commentArea">
-    {%  for c in comments %}
-   <div class="row">
-        <div class="col-md-1 col-xs-4">
-            {% if c.user.avatar and c.user.avatar.startswith('https') %}
-            <img src="{{c.user.avatar}}" alt="demo" class="img-fluid rounded-circle">
-            {% else %}
-            <img src="{{url_for('static', filename='images/default.jpg')}}" alt="demo" class="img-fluid rounded-circle">
-            {% endif %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chi tiet san pham</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css')}}">
+</head>
+<body>
+    <h1 class="subject">Chi tiet san pham</h1>
+    <div class="container flex ">
+        <div>
+            <img src="{{url_for('static', filename = product.image) }}" alt = "{{product.name}}">
         </div>
-        <div class="col-md-11 col-xs-8">
-            <p>{{ c.content }}</p>
-            <p><em class="my-date">{{ c.created_date }} </em></p>
+
+        <div>
+            <h2>{{product.name}}</h2>
+            <p> {{product.description}}</p>
+            <h4>{{"{:,.1f}".format(product.price)}} VND</h4>
         </div>
-   </div>
-    {% endfor %}
-</div>
-
- {%  if pages > 1 %}
-<ul class="pagination">
-       {% for idx in range(1, pages+1) %}
-      <li class="page-item"><a class="page-link" href="{{url_for('product_detail', product_id = product_id   ,page=idx) }}">{{ idx }}</a></li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-
-
-<script>
-    window.onload = function () {
-        let d = document.getElementsByClassName('my-date')
-        for (let i = 0; i < d.length; i++) {
-            d[i].innerText = moment(d[i].innerText).locale('vi').fromNow()
-        }
-    }
-</script>
-{% endblock %}
+    </div>
+</body>
+</html>

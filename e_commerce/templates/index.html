@@ -22,7 +22,6 @@
                 <h4 class="card-title">{{ p.name }}</h4>
                 <p class="card-text">{{ "{:,.1f}".format(p.price) }} VND</p>
                 <a href="#" class="btn btn-primary" onclick="add_to_cart(event, '{{ p.id }}', '{{ p.name }}', '{{ p.price }}')">Đặt hàng</a>
-                <a href="{{ url_for('product_detail', product_id=p.id)}}" class="btn btn-info">Xem chi tiết</a>
               </div>
             </div>
         </div>
