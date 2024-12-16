@@ -18,7 +18,6 @@ def index():
     return render_template("index.html",
                             products=products, pages=math.ceil(counter/app.config['PAGE_SIZE']))
 
-
 @app.route('/register', methods=['get','post'])
 def user_register():
     err_msg = ''
@@ -143,37 +142,10 @@ def add_to_cart():
     session['cart'] = cart
     return jsonify(utils.count_cart(cart))
 
-@app.route('/api/update_cart', methods=['PUT'])
-def update_cart():
-    data = request.json
-    id = str(data.get('id'))
-    quantity = data.get('quantity')
-
-    cart = session.get('cart')
-    if cart and id in cart:
-        cart[id]['quantity'] = quantity
-        session['cart'] = cart
-    return jsonify(utils.count_cart(cart))
-
 @app.route("/products/<int:product_id>")
 def product_detail(product_id):
     product = utils.get_product_by_id(product_id)
-    page = int(request.args.get('page', 1))
-    comments = utils.get_comments(product_id=product_id, page=page)
-    # comments = utils.get_comments(product_id= product_id, page = request.args.get('page', 1))
-    return render_template('product_detail.html',
-                           comments = comments,
-                           product_id = product_id,
-                           product = product,
-                           pages=math.ceil(utils.count_comments(product_id = product_id)/ app.config['COMMENT_SIZE']))
-
-@app.route("/api/delete-cart/<product_id>", methods=['delete'])
-def delete(product_id):
-    cart = session.get('cart')
-    if cart and product_id in cart:
-        del cart[product_id]
-        session['cart'] = cart
-    return jsonify(utils.count_cart(cart))
+    return render_template('product_detail.html',product=product)
 
 @app.route('/api/pay', methods=['post'])
 @login_required

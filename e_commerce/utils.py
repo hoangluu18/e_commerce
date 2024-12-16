@@ -2,10 +2,9 @@ import json
 from zoneinfo import available_timezones
 
 from flask_login import current_user
-from sqlalchemy.testing.suite.test_reflection import users
 
 from e_commerce import app, db
-from e_commerce.models import Category, Product, User, Receipt, ReceiptDetail, UserRole, Comment
+from e_commerce.models import Category, Product, User, Receipt, ReceiptDetail, UserRole
 from sqlalchemy import func, extract
 import hashlib
 
