@@ -26,6 +26,7 @@ class User(BaseModel, UserMixin):
     joined_date = Column(DateTime, default=datetime.now())
     user_role = Column(Enum(UserRole), default=UserRole.USER)
     receipts = relationship('Receipt', backref='user', lazy=True)
+    comments = relationship('Comment', backref='user', lazy=True)
 
     def __str__(self):
         return self.name
@@ -49,7 +50,19 @@ class Product(BaseModel):
     active = Column(Boolean, default=True)
     created_date = Column(DateTime, default=datetime.now())
     category_id = Column(Integer, ForeignKey(Category.id), nullable=False)
+
+    # Technical specifications
+    screen = Column(String(100))
+    os = Column(String(50))
+    rear_camera = Column(String(100))
+    front_camera = Column(String(50))
+    cpu = Column(String(100))
+    ram = Column(String(20))
+    internal_memory = Column(String(20))
+    battery = Column(String(50))
+
     receipt_details = relationship("ReceiptDetail", backref="product", lazy=True)
+    comments = relationship("Comment", backref="product", lazy=True)
 
     def __str__(self):
         return self.name
@@ -63,6 +76,14 @@ class ReceiptDetail(db.Model):
     product_id = Column(Integer, ForeignKey(Product.id), nullable=False, primary_key=True)
     quantity = Column(Integer, default=0)
     unit_price = Column(Float, default=0)
+
+class Comment(BaseModel):
+    content = Column(String(255), nullable=False)
+    product_id = Column(Integer, ForeignKey(Product.id), nullable=False)
+    user_id = Column(Integer, ForeignKey(User.id), nullable=False)
+    created_date = Column(DateTime, default=datetime.now())
+    def __str__(self):
+        return self.content
 
 
 if __name__ == '__main__':

@@ -1,25 +1,134 @@
 {% extends 'layout/base.html' %}
-{% block title %} Trang chu {% endblock %}
+{% block title %} Đăng nhập {% endblock %}
 {% block content %}
-<h1 class="text-center text-danger">DANG NHAP NGUOI DUNG</h1>
+<div class="login-container">
+    <div class="login-box">
+        <h2 class="login-title">Đăng nhập</h2>
 
-{% if err_msg %}
-    <div class="alert alert-danger">
-        <h4>{{ err_msg }}</h4>
-    </div>
-{% endif %}
+        {% if err_msg %}
+        <div class="alert alert-danger">
+            <h4>{{ err_msg }}</h4>
+        </div>
+        {% endif %}
 
-<form method="post" >
-    <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" class="form-control" id="username" name="username" placeholder="Nhap username" required>
-    </div>
-      <div class="form-group">
-        <label for="pass">Password</label>
-        <input type="password" class="form-control" id="pass" name="password" placeholder="Nhap password">
-    </div>
-  <input type="submit" value="Dang Nhap" class="btn btn-danger">
+        <form method="post">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">
+                            <i class="fas fa-user"></i>
+                        </span>
+                    </div>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Tên đăng nhập" required>
+                </div>
+            </div>
 
-</form>
-<br><br>
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">
+                            <i class="fas fa-lock"></i>
+                        </span>
+                    </div>
+                    <input type="password" class="form-control" id="pass" name="password" placeholder="Mật khẩu" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-signin">
+                <i class="fas fa-sign-in-alt"></i> Đăng nhập
+            </button>
+        </form>
+
+        <div class="login-footer">
+            <p>Chưa có tài khoản? <a href="{{ url_for('user_register') }}">Đăng ký ngay</a></p>
+        </div>
+    </div>
+</div>
+
+<style>
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 20px;
+}
+
+.login-box {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    padding: 40px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-title {
+    text-align: center;
+    color: #2193b0;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.input-group-text {
+    background: #f8f9fa;
+    border: none;
+    color: #2193b0;
+}
+
+.form-control {
+    border: 1px solid #e0e0e0;
+    padding: 12px;
+    border-radius: 0 5px 5px 0;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #2193b0;
+}
+
+
+
+.btn-signin {
+    background: #2193b0;
+    color: white;
+    padding: 12px;
+    border-radius: 5px;
+    width: 100%;
+    font-weight: 600;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+.btn-signin:hover {
+    background: #1a7a8c;
+    transform: translateY(-2px);
+    color: white;
+}
+
+.login-footer {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+}
+
+.login-footer a {
+    color: #2193b0;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.login-footer a:hover {
+    text-decoration: underline;
+}
+
+.alert {
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+</style>
 {% endblock %}

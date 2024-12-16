@@ -16,6 +16,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://luuhoang:Pmshoanghot1%4
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['PAGE_SIZE'] = 4
+app.config['COMMENT_SIZE'] = 5
 db = SQLAlchemy(app=app)
 
 

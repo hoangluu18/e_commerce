@@ -1,39 +1,104 @@
 {% extends 'layout/base.html' %}
-{% block title %} Gio hang {% endblock %}
+{% block title %}Giỏ hàng{% endblock %}
 {% block content %}
-    <h1 class="text-center text-black">GIO HANG</h1>
+<div class="container my-5">
+    <h1 class="text-center text-dark mb-4">GIỎ HÀNG</h1>
     {% if 'cart' in session and session['cart'] %}
-    <table class="table">
-        <tr>
-            <th>Ma san pham</th>
-            <th>Ten san pham</th>
-            <th>Don gia</th>
-            <th>So luong</th>
-        </tr>
-        {% for c in session['cart'].values() %}
-        <tr>
-            <td>{{ c.id }}</td>
-            <td>{{ c.name }}</td>
-            <td>{{ c.price }}</td>
-            <td>{{ c.quantity }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    <div class="alert alert-info">
-      <h5>
-        Tong san pham: {{ stats.total_quantity }}
-      </h5>
-      <h5>
-        Tong tien: {{ "{:,.1f}".format(stats.total_amount) }} VND
-      </h5>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>Mã sản phẩm</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Đơn giá</th>
+                    <th>Số lượng</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in session['cart'].values() %}
+                <tr id="product{{ c.id }}">
+                    <td>{{ c.id }}</td>
+                    <td>
+                        <strong>{{ c.name }}</strong>
+                    </td>
+                    <td>
+                        <strong>
+                        <span class="text">{{ "{:,.1f}".format(c.price|float) }} </span>
+                        </strong>
+                    </td>
+                    <td>
+                        <input type="number" min="1" class="form-control d-inline-block w-50 text-center"
+                               value="{{ c.quantity }}"
+                               onblur="updateCart('{{ c.id }}', this)">
+                    </td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" onclick="deleteCart('{{ c.id }}')">
+                            <i class="fas fa-trash-alt"></i> Xóa
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-    {% if current_user.is_authenticated %}
-    <input type="button" value="Thanh toan" class="btn btn-danger mt-1 p-2" onclick="pay()">
+
+    <div class="alert alert-secondary d-flex justify-content-between align-items-center p-3">
+        <div>
+            <h5 class="mb-1">
+                Tổng sản phẩm:
+                <span class="cart-counter badge ">{{ stats.total_quantity }}  </span>
+            </h5>
+            <h5>
+                Tổng tiền:
+                <span id="total-amount" class="text-danger fw-bold">{{ "{:,.0f}".format(stats.total_amount).replace(',', '.') }}
+                </span>
+                <span class="text-danger fw-bold">VND</span>
+            </h5>
+        </div>
+        {% if current_user.is_authenticated %}
+        <button class="btn btn-success btn-lg" onclick="pay()">
+            <i class="fas fa-credit-card"></i> Thanh toán
+        </button>
+        {% else %}
+        <a href="{{ url_for('user_signin', next='cart') }}" class="btn btn-warning btn-lg">
+            <i class="fas fa-sign-in-alt"></i> Đăng nhập để thanh toán!
+        </a>
+        {% endif %}
+    </div>
     {% else %}
-    <a href="{{ url_for('user_signin', next='cart') }}">Bạn phải dang nhap de thanh toan!!!</a>
+    <div class="text-center mt-5">
+        <p class="text-muted"><i>Không có sản phẩm nào trong giỏ hàng!</i></p>
+        <a href="{{ url_for('index') }}" class="btn btn-primary">Tiếp tục mua sắm</a>
+    </div>
     {% endif %}
-    <br><br>
-    {% else %}
-        <p class="text-center"><i>Khong co san pham nao trong gio!!!</i></p>
-    {% endif %}
+</div>
+
+<style>
+    .table th, .table td {
+        vertical-align: middle;
+    }
+
+    .table thead th {
+        background-color: #343a40;
+        color: #ffffff;
+    }
+
+    .cart-counter {
+        font-size: 1.2rem;
+        padding: 5px 10px;
+    }
+
+    .btn-danger, .btn-success, .btn-warning {
+        font-size: 1rem;
+    }
+
+    .text-success {
+        font-size: 1.3rem;
+    }
+
+    .text-muted {
+        font-size: 1.2rem;
+    }
+</style>
 {% endblock %}

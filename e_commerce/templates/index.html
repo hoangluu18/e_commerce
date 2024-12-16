@@ -1,34 +1,52 @@
 {% extends 'layout/base.html' %}
 {% block title %} Trang chu {% endblock %}
 {% block content %}
-<h1 class="subject">WEBSITE BAN HANG TRUC TUYEN</h1>
-
-
-    {%  if pages > 1 %}
-    <ul class="pagination">
-       {% for idx in range(1, pages+1) %}
-      <li class="page-item"><a class="page-link" href="{{url_for('index',page=idx) }}">{{ idx }}</a></li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-
-    {% if products %}
-    <div class="row">
+{% include 'layout/carousel.html' %}
+<div class="container-fluid product-container">
+{% if products %}
+    <div id="products" class="row">
         {% for p in products %}
-        <div class="col-md-3 col-xs-12" style="padding: 5px">
-            <div class="card" style="padding: 5px">
-              <img class="card-img-top" src="{{url_for('static', filename = p.image) }}" alt="{{p.name}}">
-              <div class="card-body">
-                <h4 class="card-title">{{ p.name }}</h4>
-                <p class="card-text">{{ "{:,.1f}".format(p.price) }} VND</p>
-                <a href="#" class="btn btn-primary" onclick="add_to_cart(event, '{{ p.id }}', '{{ p.name }}', '{{ p.price }}')">Đặt hàng</a>
-              </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 product-item">
+            <div class="product-card" >
+                <div class="product-image" >
+                    <a href="{{ url_for('product_detail', product_id=p.id) }}">
+                        <img src="{{ p.image }}" alt="{{p.name}}">
+                    </a>
+                </div>
+                <div class="product-details" >
+                    <h4 class="product-title">{{ p.name }}</h4>
+                    <p class="product-price">{{ "{:,.0f}".format(p.price).replace(',', '.') }} VND</p>
+                    <div class="product-buttons">
+                        <a href="#" class="btn btn-order" onclick="add_to_cart(event, '{{ p.id }}', '{{ p.name }}', '{{ p.price }}')">
+                            <i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng
+                        </a>
+                        <a href="{{ url_for('product_detail', product_id=p.id)}}" class="btn btn-detail">
+                            <i class="fas fa-info-circle"></i> Chi tiết
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
         {% endfor %}
     </div>
+
+    {% if pages > 1 %}
+    <div class="pagination-container">
+        <ul class="pagination">
+            {% for idx in range(1, pages+1) %}
+            <li class="page-item {% if idx == request.args.get('page', 1)|int %}active{% endif %}">
+                <a class="page-link" href="{{url_for('index', page=idx)}}">{{ idx }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
     {% else %}
         <p><i>No products found.</i></p>
     {% endif %}
+</div>
+
 
 {% endblock %}
+

@@ -1,43 +1,199 @@
 {% extends 'layout/base.html' %}
-{% block title %} Trang chu {% endblock %}
+{% block title %} Đăng ký {% endblock %}
 {% block content %}
-<h1 class="text-center text-danger">DANG KI NGUOI DUNG</h1>
+<div class="register-container">
+    <div class="register-box">
+        <h2 class="register-title">Đăng ký tài khoản</h2>
 
-{% if err_msg %}
-    <div class="alert alert-danger">
-        <h4>{{ err_msg }}</h4>
-    </div>
-{% endif %}
+        {% if err_msg %}
+        <div class="alert alert-danger">
+            <h4>{{ err_msg }}</h4>
+        </div>
+        {% endif %}
 
-<form method="post" action="{{ url_for('user_register') }}" enctype="multipart/form-data">
-    <div class="form-group">
-        <label for="name">Ho ten</label>
-        <input type="text" class="form-control" id="name" name="name" placeholder="Nhap ho ten" required>
-    </div>
-    <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" class="form-control" id="email" name="email" placeholder="Nhap email">
-    </div>
-    <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" class="form-control" id="username" name="username" placeholder="Nhap username" required>
-    </div>
-      <div class="form-group">
-        <label for="pass">Password</label>
-        <input type="password" class="form-control" id="pass" name="password" placeholder="Nhap password">
-    </div>
+        <form method="post" action="{{ url_for('user_register') }}" enctype="multipart/form-data">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">
+                            <i class="fas fa-user"></i>
+                        </span>
+                    </div>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Họ và tên" required>
+                </div>
+            </div>
 
-  <div class="form-group">
-    <label for="confirm">Confirm Password</label>
-    <input type="password" class="form-control" id="confirm" name="confirm" placeholder="Nhap password lan nua">
-  </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">
+                            <i class="fas fa-envelope"></i>
+                        </span>
+                    </div>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+                </div>
+            </div>
 
-  <div class="form-group">
-    <label for="avatar">Anh dai dien</label>
-    <input type="file" class="form-control" id="avatar" name="avatar" >
-  </div>
-  <input type="submit" value="Dang ki" class="btn btn-danger">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">
+                            <i class="fas fa-user-circle"></i>
+                        </span>
+                    </div>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Tên đăng nhập" required>
+                </div>
+            </div>
 
-</form>
-<br><br>
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">
+                            <i class="fas fa-lock"></i>
+                        </span>
+                    </div>
+                    <input type="password" class="form-control" id="pass" name="password" placeholder="Mật khẩu">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">
+                            <i class="fas fa-lock"></i>
+                        </span>
+                    </div>
+                    <input type="password" class="form-control" id="confirm" name="confirm" placeholder="Xác nhận mật khẩu">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="avatar" name="avatar">
+                    <label class="custom-file-label" for="avatar">
+                        <i class="fas fa-image"></i> Chọn ảnh đại diện
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-signup">
+                <i class="fas fa-user-plus"></i> Đăng ký
+            </button>
+        </form>
+
+        <div class="register-footer">
+            <p>Đã có tài khoản? <a href="{{ url_for('user_signin') }}">Đăng nhập</a></p>
+        </div>
+    </div>
+</div>
+
+<style>
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 20px;
+}
+
+.register-box {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    padding: 40px;
+    width: 100%;
+    max-width: 500px;
+}
+
+.register-title {
+    text-align: center;
+    color: #2193b0;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.input-group-text {
+    background: #f8f9fa;
+    border: none;
+    color: #2193b0;
+}
+
+.form-control {
+    border: 1px solid #e0e0e0;
+    padding: 12px;
+    border-radius: 0 5px 5px 0;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #2193b0;
+}
+
+.custom-file-label {
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #666;
+}
+
+.custom-file-input {
+    cursor: pointer;
+}
+
+.custom-file-label::after {
+    display: none;
+}
+
+.btn-signup {
+    background: #2193b0;
+    color: white;
+    padding: 12px;
+    border-radius: 5px;
+    width: 100%;
+    font-weight: 600;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+
+.btn-signup:hover {
+    background: #1a7a8c;
+    transform: translateY(-2px);
+    color: white;
+}
+.register-footer {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+}
+
+.register-footer a {
+    color: #2193b0;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.register-footer a:hover {
+    text-decoration: underline;
+}
+
+.alert {
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+</style>
+
+<script>
+// Update file input label with selected filename
+document.getElementById('avatar').addEventListener('change', function(e) {
+    var fileName = e.target.files[0].name;
+    var label = document.querySelector('.custom-file-label');
+    label.innerHTML = '<i class="fas fa-image"></i> ' + fileName;
+});
+</script>
 {% endblock %}
