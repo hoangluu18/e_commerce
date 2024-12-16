@@ -11,24 +11,37 @@
             <th>So luong</th>
         </tr>
         {% for c in session['cart'].values() %}
-        <tr>
+        <tr id="product{{ c.id }}">
             <td>{{ c.id }}</td>
             <td>{{ c.name }}</td>
             <td>{{ c.price }}</td>
-            <td>{{ c.quantity }}</td>
+
+            <td>
+                <div class="form-group">
+                    <input type="number"
+                           min="1"
+                           onblur="updateCart( '{{ c.id }}', this)"
+                           value="{{ c.quantity }}"
+                           class="form-control"/>
+                </div>
+            </td>
+
+            <td>
+                <input type="button" onclick="deleteCart('{{ c.id }}')" value="Xoa" class="btn btn-danger" />
+            </td>
         </tr>
         {% endfor %}
     </table>
     <div class="alert alert-info">
       <h5>
-        Tong san pham: {{ stats.total_quantity }}
+        Tong san pham: <span class="cart-counter">{{ stats.total_quantity }}</span>
       </h5>
       <h5>
-        Tong tien: {{ "{:,.1f}".format(stats.total_amount) }} VND
+          Tong tien: <span id = "total-amount"> {{ "{:,.1f}".format(stats.total_amount) }} </span> VND
       </h5>
     </div>
     {% if current_user.is_authenticated %}
-    <input type="button" value="Thanh toan" class="btn btn-danger mt-1 p-2" onclick="pay()">
+    <input type="button" value="Thanh toan" class="btn btn-success mt-1 p-2" onclick="pay()">
     {% else %}
     <a href="{{ url_for('user_signin', next='cart') }}">Bạn phải dang nhap de thanh toan!!!</a>
     {% endif %}
