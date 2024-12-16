@@ -11,7 +11,9 @@ load_dotenv()
 app = Flask(__name__)
 
 app.secret_key='@#%#%$$$^%$^%$%#%^%^&&*&^*^&%^&%&%^%'
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://luuhoang:Pmshoanghot1%40@luuhoang.mysql.pythonanywhere-services.com/luuhoang$saleappdb?charset=utf8mb4'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://luuhoang:Pmshoanghot1%40@luuhoang.mysql.pythonanywhere-services.com/luuhoang$saleappdb?charset=utf8mb4'
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['PAGE_SIZE'] = 8
 app.config['COMMENT_SIZE'] = 5
@@ -20,9 +22,12 @@ db = SQLAlchemy(app=app)
 
 
 cloudinary.config(
-    cloud_name=os.getenv('CLOUD_NAME'),
-    api_key=os.getenv('API_KEY'),
-    api_secret=os.getenv('API_SECRET')
+    cloud_name='daku3kfyd',
+    api_key='572181413815548',
+    api_secret='b5RbspGDne2wIasbPK268IMfkGY',
+    api_proxy = "http://proxy.server:3128",
+    secure=True
+
 )
 
 login = LoginManager(app = app)
