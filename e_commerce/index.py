@@ -2,14 +2,11 @@ import math
 
 
 from e_commerce import app, login
-
 from flask import render_template, request, redirect, url_for, session, jsonify
 import cloudinary.uploader
 from flask_login import login_user, logout_user, login_required, current_user
 from e_commerce.models import UserRole
 from e_commerce import utils
-from e_commerce.models import Comment
-
 
 @app.route('/')
 def index():
@@ -20,7 +17,6 @@ def index():
     counter = utils.count_products()
     return render_template("index.html",
                             products=products, pages=math.ceil(counter/app.config['PAGE_SIZE']))
-
 
 @app.route('/register', methods=['get','post'])
 def user_register():
@@ -100,21 +96,6 @@ def product_list():
 def cart():
     return render_template("cart.html", stats=utils.count_cart(session.get('cart')))
 
-@app.route('/api/comments', methods=['post'])
-@login_required
-def add_comment():
-    data = request.json
-    product_id = data.get('product_id')
-    content = data.get('content')
-    try:
-        c = utils.add_comment(content=content, product_id=product_id)
-    except:
-        return {'status': 404, 'err_msg': 'Chuong trinh dang bi loi'}
-    return {'status': 201, 'comment': {'id': c.id, 'content': c.content, 'created_date': c.created_date, 'user': {
-        'username': current_user.username,
-        'avatar': current_user.avatar
-    }}}
-
 @app.route('/api/add_to_cart', methods=['POST'])
 def add_to_cart():
     data = request.json
@@ -136,37 +117,10 @@ def add_to_cart():
     session['cart'] = cart
     return jsonify(utils.count_cart(cart))
 
-@app.route('/api/update_cart', methods=['PUT'])
-def update_cart():
-    data = request.json
-    id = str(data.get('id'))
-    quantity = data.get('quantity')
-
-    cart = session.get('cart')
-    if cart and id in cart:
-        cart[id]['quantity'] = quantity
-        session['cart'] = cart
-    return jsonify(utils.count_cart(cart))
-
 @app.route("/products/<int:product_id>")
 def product_detail(product_id):
     product = utils.get_product_by_id(product_id)
-    page = int(request.args.get('page', 1))
-    comments = utils.get_comments(product_id=product_id, page=page)
-    # comments = utils.get_comments(product_id= product_id, page = request.args.get('page', 1))
-    return render_template('product_detail.html',
-                           comments = comments,
-                           product_id = product_id,
-                           product = product,
-                           pages=math.ceil(utils.count_comments(product_id = product_id)/ app.config['COMMENT_SIZE']))
-
-@app.route("/api/delete-cart/<product_id>", methods=['delete'])
-def delete(product_id):
-    cart = session.get('cart')
-    if cart and product_id in cart:
-        del cart[product_id]
-        session['cart'] = cart
-    return jsonify(utils.count_cart(cart))
+    return render_template('product_detail.html',product=product)
 
 @app.route('/api/pay', methods=['post'])
 @login_required
