@@ -128,3 +128,7 @@ def get_comments(product_id, page = 1):
 
 def count_comments(product_id):
     return Comment.query.filter(Comment.product_id.__eq__(product_id)).count()
+
+@app.template_filter('format')
+def format_filter(value, format_type):
+    return format(value, format_type)

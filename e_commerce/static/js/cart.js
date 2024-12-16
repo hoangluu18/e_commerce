@@ -26,6 +26,34 @@ function add_to_cart(event, id, name, price) {
     })
 }
 
+function addToCartAndRedirect(event, id, name, price) {
+    event.preventDefault();
+    fetch('/api/add_to_cart', {
+        method: 'post',
+        body: JSON.stringify({
+            'id': id,
+            'name': name,
+            'price': price
+        }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(function(res) {
+        return res.json();
+    }).then(function(data) {
+        let counter = document.getElementsByClassName('cart-badge');
+        for (let i = 0; i < counter.length; i++) {
+            counter[i].innerText = data.total_quantity;
+        }
+        // After cart is updated, redirect
+        window.location.href = '/cart';
+    }).catch(function(err) {
+        console.error(err);
+    });
+}
+
+
+
 function pay(){
     if (confirm('Ban chac chan muon thanh toan khong?') == true){
         fetch('/api/pay', {
@@ -85,10 +113,13 @@ function deleteCart(id) {
 
 }
 
-function addComment(productId){
+function addComment(productId) {
     let content = document.getElementById('commentId')
-    if (content !== null){
-        fetch('/api/comments',{
+    if (content !== null && content.value.trim() !== '') {
+        // Show loading
+
+
+        fetch('/api/comments', {
             method: 'post',
             body: JSON.stringify({
                 'product_id': productId,
@@ -97,24 +128,54 @@ function addComment(productId){
             headers: {
                 'Content-Type': 'application/json'
             }
-        }).then(res => res.json()).then(data =>{
-            if (data.status == 201){
-                let c = data.comment
-                let area = document.getElementById('commentArea')
-                area.innerHTML = `
-                    <div class="row">
-                        <div class="col-md-1 col-xs-4">
-                            <img src="${c.user.avatar}" alt="demo" class="img-fluid rounded-circle">
+        }).then(res => res.json()).then(data => {
+            if (data.status == 201) {
+                let c = data.comment;
+                let area = document.getElementById('commentArea');
+
+                // Create new comment element
+                const newComment = `
+                    <div class="comment-item" style="opacity: 0; transform: translateY(20px);" xmlns="http://www.w3.org/1999/html">
+                        <div class="comment-user">
+                            <div class="comment-avatar">
+                                <img src="${c.user.avatar || '/static/images/default.jpg'}" 
+                                     alt="${c.user.name || 'User'}">
+                            </div>
+                            <div class="user-info">
+                            <strong
+                                <span class="text-dark username">${c.user.name}</span>
+                             </strong>
+                                <em class="comment-date">${moment(c.created_date).locale('vi').fromNow()}</em>
+                            </div>
                         </div>
-                        <div class="col-md-11 col-xs-8">
+                        <div class="comment-content">
                             <p>${c.content}</p>
-                            <p><em>${moment(c.created_date).locale('vi').fromNow()}</em></p>
                         </div>
-                   </div>
-                ` + area.innerHTML
-            }else  if (data.status == 404){
-                alert(data.err_msg)
+                    </div>
+                `;
+
+                area.innerHTML = newComment + area.innerHTML;
+
+                // Animate new comment
+                const newCommentEl = area.firstElementChild;
+                requestAnimationFrame(() => {
+                    newCommentEl.style.transition = 'all 0.3s ease';
+                    newCommentEl.style.opacity = '1';
+                    newCommentEl.style.transform = 'translateY(0)';
+                });
+
+                // Clear input
+                content.value = '';
+
+
+            } else {
+
             }
-        })
+        }).catch(error => {
+            console.error('Error:', error);
+
+        });
+    } else {
+        Console.log('Empty comment');
     }
 }

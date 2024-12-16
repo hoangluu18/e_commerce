@@ -1,10 +1,10 @@
 {
     "product": [
       {
-        "id": 1,
-        "category_id": 1,
-        "created_date": "2024-03-20",
-        "active": true,
+        "id": 1, 
+        "category_id": 1, 
+        "created_date": "2024-03-20", 
+        "active": true, 
         "image": "https://cdn.tgdd.vn/Products/Images/42/322128/oppo-find-x8-grey-thumb-600x600.jpg",
         "price": 22990000,
         "name": "OPPO Find X8 5G",

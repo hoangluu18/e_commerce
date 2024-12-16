@@ -13,7 +13,7 @@ app = Flask(__name__)
 app.secret_key='@#%#%$$$^%$^%$%#%^%^&&*&^*^&%^&%&%^%'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-app.config['PAGE_SIZE'] = 8
+app.config['PAGE_SIZE'] = 4
 app.config['COMMENT_SIZE'] = 5
 db = SQLAlchemy(app=app)
 

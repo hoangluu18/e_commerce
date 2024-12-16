@@ -256,14 +256,19 @@ table.product {
 }
 
 .product-title {
-    font-size: 0.95rem;
-    margin-bottom: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
     height: 2.4em;
+    overflow: hidden;
+    display: -webkit-box;
+    text-align: center; /* Add this line */
 }
 
 .product-price {
     font-size: 1rem;
     margin-bottom: 12px;
+    text-align: center;
 }
 
 .product-buttons {
@@ -278,5 +283,11 @@ table.product {
 .btn-order i, .btn-detail i {
     font-size: 0.8rem;
 }
+
+
+/*product_detail*/
+
+
+
 
 

@@ -101,16 +101,26 @@ def cart():
 @login_required
 def add_comment():
     data = request.json
-    product_id = data.get('product_id')
-    content = data.get('content')
-    try:
-        c = utils.add_comment(content=content, product_id=product_id)
-    except:
-        return {'status': 404, 'err_msg': 'Chuong trinh dang bi loi'}
-    return {'status': 201, 'comment': {'id': c.id, 'content': c.content, 'created_date': c.created_date, 'user': {
-        'username': current_user.username,
-        'avatar': current_user.avatar
-    }}}
+
+    comment = Comment(content=data['content'],
+                      product_id=data['product_id'],
+                      user_id=current_user.id,
+                      created_date=datetime.now())
+
+    db.session.add(comment)
+    db.session.commit()
+
+    return jsonify({
+        'status': 201,
+        'comment': {
+            'content': comment.content,
+            'created_date': comment.created_date.strftime('%Y-%m-%d %H:%M:%S'),
+            'user': {
+                'name': current_user.name,
+                'avatar': current_user.avatar
+            }
+        }
+    })
 
 @app.route('/api/add_to_cart', methods=['POST'])
 def add_to_cart():

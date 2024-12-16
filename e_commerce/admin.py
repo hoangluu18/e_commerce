@@ -27,7 +27,7 @@ class ProductView(ModelView):
     can_export = True
     column_filters = ['name', 'price']
     column_searchable_list = ('name', 'description')
-    column_list = ('name', 'description', 'price', 'image', 'active', 'created_date', 'category')
+    column_list = ('name', 'description', 'price', 'image', 'active', 'created_date', 'category','screen','ram','cpu','internal_memory','os','rear_camera','front_camera','battery')
 
     def scaffold_form(self):
         form = super(ProductView, self).scaffold_form()

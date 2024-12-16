@@ -50,6 +50,17 @@ class Product(BaseModel):
     active = Column(Boolean, default=True)
     created_date = Column(DateTime, default=datetime.now())
     category_id = Column(Integer, ForeignKey(Category.id), nullable=False)
+
+    # Technical specifications
+    screen = Column(String(100))
+    os = Column(String(50))
+    rear_camera = Column(String(100))
+    front_camera = Column(String(50))
+    cpu = Column(String(100))
+    ram = Column(String(20))
+    internal_memory = Column(String(20))
+    battery = Column(String(50))
+
     receipt_details = relationship("ReceiptDetail", backref="product", lazy=True)
     comments = relationship("Comment", backref="product", lazy=True)
 
