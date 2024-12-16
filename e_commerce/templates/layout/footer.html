@@ -1,4 +1,136 @@
-<div class="jumbotron">
-  <h1>E-commerce website &copy; 2024</h1>
-  <p>Tran Duc Duy <br> Luu Viet Hoang <br> Tran Ngoc Minh hoang</p>
-</div>
+<footer id="contact" class="footer-section">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Về chúng tôi</h3>
+                <p>Nền tảng của chúng tôi cung cấp các sản phẩm và dịch vụ tốt phục vụ khách hàng.</p>
+            </div>
+            <div class="footer-column">
+                <h3>Liên kết</h3>
+                <ul>
+                    <li><a href="#">Trang chủ</a></li>
+                    <li><a href="#products">Sản phẩm</a></li>
+                    <li><a href="#contact">Liên hệ</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Thông tin liên hệ</h3>
+                <ul class="contact-info">
+                    <li><i class="fas fa-envelope"></i> luu186835@gmail.com</li>
+                    <li><i class="fas fa-phone"></i> +84 123 456 789</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Da Nang City, Vietnam</li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Theo dõi chúng tôi</h3>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/pmshoanghot"><i class="fab fa-facebook"></i></a>
+                    <a href="https://x.com/pmshoanghot1810"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="https://www.instagram.com/pms_hoang/"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <div class="container">
+            <p>&copy; 2024 E-commerce. All rights reserved.</p>
+            <p class="credits">Developed by: Tran Duc Duy | Luu Viet Hoang | Tran Ngoc Minh Hoang</p>
+        </div>
+    </div>
+</footer>
+
+<style>
+.footer-section {
+    background-color: #f8f9fa;
+    padding: 60px 0 20px;
+    border-top: 1px solid #e7e7e7;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.footer-column h3 {
+    color: #333;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-column ul li {
+    margin-bottom: 10px;
+}
+
+.footer-column ul li a {
+    color: #666;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-column ul li a:hover {
+    color: #007bff;
+}
+
+.social-links a {
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 35px;
+    margin-right: 10px;
+    transition: background-color 0.3s;
+}
+
+.social-links a:hover {
+    background-color: #0056b3;
+}
+
+.contact-info li {
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.footer-bottom {
+    border-top: 1px solid #e7e7e7;
+    padding-top: 20px;
+    text-align: center;
+}
+
+.footer-bottom p {
+    color: #666;
+    margin: 5px 0;
+}
+
+.credits {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+@media (max-width: 768px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .contact-info li {
+        justify-content: center;
+    }
+
+    .social-links {
+        margin-top: 15px;
+    }
+}
+</style>

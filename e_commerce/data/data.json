@@ -1,0 +1,147 @@
+{
+    "product": [
+      {
+        "id": 1,
+        "category_id": 1,
+        "created_date": "2024-03-20",
+        "active": true,
+        "image": "https://cdn.tgdd.vn/Products/Images/42/322128/oppo-find-x8-grey-thumb-600x600.jpg",
+        "price": 22990000,
+        "name": "OPPO Find X8 5G",
+        "screen": "6.59 - Tần số quét 120 Hz",
+        "os": "Android 15",
+        "rear_camera": "3 camera 50 MP",
+        "front_camera": "32MP",
+        "cpu": "Snapdragon 8 Gen 2",
+        "ram": "16 GB",
+        "internal_memory": "512 GB",
+        "battery": "5630 mAh"
+      }
+      ,
+      {
+        "id": 2,
+        "category_id": 1,
+        "created_date": "2024-03-20",
+        "active": true,
+        "image": "https://cdn.tgdd.vn/Products/Images/42/329149/iphone-16-pro-max-sa-mac-thumb-600x600.jpg",
+        "price": 33790000,
+        "name": "iPhone 16 Pro Max",
+        "screen": "6.59 - Tần số quét 120 Hz",
+        "os": "iOS 18",
+        "rear_camera": "Chính 48 MP & Phụ 48 MP, 12 MP",
+        "front_camera": "12 MP",
+        "cpu": "Apple A18 Pro 6 nhân",
+        "ram": "8 GB",
+        "internal_memory": "256 GB",
+        "battery": "4000 mAh"
+      }
+      ,
+      {
+        "id": 3,
+        "category_id": 1,
+        "created_date": "2024-03-20",
+        "active": true,
+        "image": "https://cdn.tgdd.vn/Products/Images/42/329149/iphone-16-pro-max-sa-mac-thumb-600x600.jpg",
+        "price": 33790000,
+        "name": "Samsung Galaxy S24 Ultra 5G",
+        "screen": "6.8 - Tần số quét 120 Hz",
+        "os": "iOS 18",
+        "rear_camera": "Chính 200 MP & Phụ 50 MP, 12 MP, 10 MP",
+        "front_camera": "12 MP",
+        "cpu": "Snapdragon 8 Gen 3 for Galaxy",
+        "ram": "12GB",
+        "internal_memory": "256 GB",
+        "battery": "5000 mAh"
+      }
+      ,
+      {
+        "id": 4,
+        "category_id": 2,
+        "created_date": "2024-03-20",
+        "active": true,
+        "image": "https://cdn.tgdd.vn/Products/Images/44/325242/dell-inspiron-15-3520-i5-n5i5052w1-thumb-600x600.jpg",
+        "price": 16490000,
+        "name": "Dell Inspiron 15 3520",
+        "screen": "15.6",
+        "os": "Windows 11 Home SL",
+        "rear_camera": "",
+        "front_camera": "HD webcam",
+        "cpu": "Intel Core i5 Alder Lake - 1235U",
+        "ram": "16GB",
+        "internal_memory": "512 GB",
+        "battery": "3-cell, 41Wh"
+      }
+      ,
+      {
+        "id": 5,
+        "category_id": 2,
+        "created_date": "2024-03-20",
+        "active": true,
+        "image": "https://cdn.tgdd.vn/Products/Images/44/313333/lenovo-ideapad-slim-3-15iah8-i5-83er00evn-thumb-600x600.jpg",
+        "price": 13890000,
+        "name": "Lenovo Ideapad Slim 3",
+        "screen": "15.6",
+        "os": "Windows 11 Home SL",
+        "rear_camera": "",
+        "front_camera": "HD webcam",
+        "cpu": "Intel Core i5 Alder Lake - 12450H",
+        "ram": "16GB",
+        "internal_memory": "512 GB",
+        "battery": "3-cell, 41Wh"
+      }
+      ,
+      {
+        "id": 6,
+        "category_id": 2,
+        "created_date": "2024-03-20",
+        "active": true,
+        "image": "https://cdn.tgdd.vn/Products/Images/44/321436/acer-aspire-a315-44p-r9w8-r7-nxksjsv002-thumb-600x600.jpg",
+        "price": 10690000,
+        "name": "Acer Aspire 3 A315 ",
+        "screen": "15.6",
+        "os": "Windows 11 Home SL",
+        "rear_camera": "",
+        "front_camera": "HD webcam",
+        "cpu": "AMD Ryzen 7 - 5700U",
+        "ram": "16GB",
+        "internal_memory": "512 GB",
+        "battery": "3-cell, 41Wh"
+      }
+      ,
+      {
+        "id": 7,
+        "category_id": 3,
+        "created_date": "2024-03-20",
+        "active": true,
+        "image": "https://cdn.tgdd.vn/Products/Images/522/331807/tcl-tab-10l-gen-3-black-thumb-600x600.jpg",
+        "price": 26900000,
+        "name": "tcl-tab-10l-gen-3",
+        "screen": "10.1 IPS LCD",
+        "os": "Android 14",
+        "rear_camera": "8 MP",
+        "front_camera": "5 MP",
+        "cpu": "MediaTek Helio G36 8 nhân",
+        "ram": "4 GB",
+        "internal_memory": "512 GB",
+        "battery": "6000 mAh"
+      }
+      ,
+      {
+        "id": 8,
+        "category_id": 3,
+        "created_date": "2024-03-20",
+        "active": true,
+        "image": "https://cdn.tgdd.vn/Products/Images/522/332555/oppo-pad-3-pro-thumb-600x600.jpg",
+        "price": 16990000,
+        "name": "OPPO Pad 3 Pro",
+        "screen": "12.1 LTPS LCD",
+        "os": "Android 14",
+        "rear_camera": "8 MP",
+        "front_camera": "5 MP",
+        "cpu": "Snapdragon 8 Gen 3 8 nhân",
+        "ram": "12 GB",
+        "internal_memory": "512 GB",
+        "battery": "9000 mAh"
+      }
+    ]
+  }

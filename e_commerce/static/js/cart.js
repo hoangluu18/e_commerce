@@ -16,7 +16,7 @@ function add_to_cart(event, id, name, price) {
     }).then(function (data) {
         console.info(data)
 
-        let counter = document.getElementsByClassName('cart-counter')
+        let counter = document.getElementsByClassName('cart-badge')
         for (let i = 0; i < counter.length; i++) {
             counter[i].innerText = data.total_quantity
         }
