@@ -138,7 +138,7 @@ function addComment(productId) {
                     <div class="comment-item" style="opacity: 0; transform: translateY(20px);" xmlns="http://www.w3.org/1999/html">
                         <div class="comment-user">
                             <div class="comment-avatar">
-                                <img src="${c.user.avatar || '/static/images/default.jpg'}" 
+                                <img src="${c.user.avatar || '/static/images/default.jpg'}"
                                      alt="${c.user.name || 'User'}">
                             </div>
                             <div class="user-info">

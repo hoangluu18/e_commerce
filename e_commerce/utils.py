@@ -1,10 +1,10 @@
 import json
-from models import Comment
 from flask_login import current_user
 
 from e_commerce import app, db
 from e_commerce.models import Category, Product, User, Receipt, ReceiptDetail, UserRole
 from sqlalchemy import func, extract
+from e_commerce.models import Comment
 import hashlib
 
 def read_json(path):

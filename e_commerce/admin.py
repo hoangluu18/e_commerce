@@ -9,8 +9,8 @@ from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user, logout_user
 import utils
 from flask import redirect
-from flask import request
-from email.mime import application
+
+
 
 class AuthenticatedModelView(ModelView):
     def is_accessible(self):
@@ -70,12 +70,14 @@ class MyAdminIndexView(AdminIndexView):
         return self.render('admin/index.html', stats = utils.category_stats())
 
 admin = Admin(app=app, name='E-commerce Administration', template_mode='bootstrap4', index_view=MyAdminIndexView())
+
 admin.add_view(AuthenticatedModelView(Category, db.session))
 admin.add_view(ProductView(Product, db.session))
 admin.add_view(LogoutView(name='Logout', endpoint='/logout'))
 admin.add_view(StatsView(name='Stats', endpoint='/stats'))
 
 
-if __name__ == '__main__':
+from e_commerce import app as application
 
-   application.run(debug=True)
+if __name__ == "__main__":
+    application.run()

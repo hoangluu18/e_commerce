@@ -1,11 +1,18 @@
 import math
 
-
+import pytz
 from e_commerce import app, login
-from flask import render_template, url_for, session, jsonify
+from flask import render_template, url_for, session, jsonify , redirect
 import cloudinary.uploader
 from flask_login import login_user, login_required
 from e_commerce.models import  Comment
+from flask import request
+from e_commerce import utils
+from flask_login import current_user
+from datetime import datetime
+from e_commerce import db
+from flask_login import logout_user
+
 
 
 @app.route('/')
@@ -99,12 +106,14 @@ def cart():
 @app.route('/api/comments', methods=['post'])
 @login_required
 def add_comment():
+    vietnam_tz = pytz.timezone('Asia/Ho_Chi_Minh')
+    current_time = datetime.now(vietnam_tz)
     data = request.json
 
     comment = Comment(content=data['content'],
                       product_id=data['product_id'],
                       user_id=current_user.id,
-                      created_date=datetime.now())
+                      created_date=current_time)
 
     db.session.add(comment)
     db.session.commit()
@@ -142,10 +151,38 @@ def add_to_cart():
     session['cart'] = cart
     return jsonify(utils.count_cart(cart))
 
+@app.route('/api/update_cart', methods=['PUT'])
+def update_cart():
+    data = request.json
+    id = str(data.get('id'))
+    quantity = data.get('quantity')
+
+    cart = session.get('cart')
+    if cart and id in cart:
+        cart[id]['quantity'] = quantity
+        session['cart'] = cart
+    return jsonify(utils.count_cart(cart))
+
 @app.route("/products/<int:product_id>")
 def product_detail(product_id):
     product = utils.get_product_by_id(product_id)
-    return render_template('product_detail.html',product=product)
+    page = int(request.args.get('page', 1))
+    comments = utils.get_comments(product_id=product_id, page=page)
+    # comments = utils.get_comments(product_id= product_id, page = request.args.get('page', 1))
+    return render_template('product_detail.html',
+                           comments = comments,
+                           product_id = product_id,
+                           product = product,
+                           pages=math.ceil(utils.count_comments(product_id = product_id)/ app.config['COMMENT_SIZE']))
+
+@app.route("/api/delete-cart/<product_id>", methods=['delete'])
+def delete(product_id):
+    cart = session.get('cart')
+    if cart and product_id in cart:
+        del cart[product_id]
+        session['cart'] = cart
+    return jsonify(utils.count_cart(cart))
+
 
 @app.route('/api/pay', methods=['post'])
 @login_required
@@ -159,5 +196,9 @@ def pay():
     return jsonify({'code': 200})
 
 if __name__ == '__main__':
-    from e_commerce.admin import *
+    from e_commerce.admin import UserRole
+
     app.run(debug=True)
+
+
+
