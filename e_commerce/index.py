@@ -8,16 +8,26 @@ from flask_login import login_user, login_required
 
 from e_commerce.models import Comment
 
-
-@app.route('/')
+@app.route("/")
 def index():
+    kw = request.args.get('kw')
     cate_id = request.args.get('category_id')
-    page = request.args.get('page',1)
-    kw = request.args.get('keyword')
-    products = utils.read_products(cate_id=cate_id, kw=kw,page=int(page))
-    counter = utils.count_products()
-    return render_template("index.html",
-                            products=products, pages=math.ceil(counter/app.config['PAGE_SIZE']))
+    page = request.args.get('page', 1, type=int)
+
+    products = Product.query
+
+    if cate_id:
+        products = products.filter(Product.category_id == cate_id)
+    if kw:
+        products = products.filter(Product.name.contains(kw))
+
+    pagination = products.paginate(page=page, per_page=app.config['PAGE_SIZE'])
+
+    return render_template('index.html',
+                           products=pagination.items,
+                           pagination=pagination,
+                           categories=utils.load_categories(),
+                           category_id=cate_id)
 
 
 @app.route('/register', methods=['get','post'])
