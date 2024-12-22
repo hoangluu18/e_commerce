@@ -39,8 +39,10 @@ class ProductView(ModelView):
         )
 
         return form
+    def is_accessible(self):
+        return current_user.is_authenticated and current_user.user_role == UserRole.ADMIN
 
-        return form
+
 class LogoutView(BaseView):
     @expose('/')
     def index(self):
