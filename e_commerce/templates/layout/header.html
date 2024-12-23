@@ -32,13 +32,16 @@
             </ul>
 
             <!-- Thanh tìm kiếm ở giữa -->
-            <form class="search-form">
+            <form class="search-form" method="get" action="{{ url_for('index') }}">
                 <div class="input-group">
-                    <input class="form-control" name="keyword" type="search" placeholder="Tìm kiếm sản phẩm..." aria-label="Search">
-                    <button class="btn btn-search" type="submit">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
+                    <input class="form-control" name="kw" type="search"
+                    placeholder="Tìm kiếm sản phẩm..."
+                    value="{{ request.args.get('kw', '') }}"
+                    aria-label="Search">
+                <button class="btn btn-search" type="submit">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
             </form>
 
             <!-- Menu bên phải -->
