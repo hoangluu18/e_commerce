@@ -31,18 +31,33 @@
                 </li>
             </ul>
 
-            <!-- Thanh tìm kiếm ở giữa -->
+<!--            &lt;!&ndash; Thanh tìm kiếm ở giữa &ndash;&gt;-->
+<!--            <form class="search-form" method="get" action="{{ url_for('index') }}">-->
+<!--                <div class="input-group">-->
+<!--                    <input class="form-control" name="kw" type="search"-->
+<!--                    placeholder="Tìm kiếm sản phẩm..."-->
+<!--                    value="{{ request.args.get('kw', '') }}"-->
+<!--                    aria-label="Search">-->
+<!--                <button class="btn btn-search" type="submit">-->
+<!--                    <i class="fas fa-search"></i>-->
+<!--                </button>-->
+<!--            </div>-->
+<!--            </form>-->
+
             <form class="search-form" method="get" action="{{ url_for('index') }}">
-                <div class="input-group">
-                    <input class="form-control" name="kw" type="search"
-                    placeholder="Tìm kiếm sản phẩm..."
-                    value="{{ request.args.get('kw', '') }}"
-                    aria-label="Search">
-                <button class="btn btn-search" type="submit">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
-            </form>
+    <div class="input-group">
+        <input class="form-control" name="kw" type="search"
+               placeholder="Tìm kiếm sản phẩm..."
+               value="{{ request.args.get('kw', '') }}"
+               aria-label="Search">
+        {% if request.args.get('category_id') %}
+        <input type="hidden" name="category_id" value="{{ request.args.get('category_id') }}">
+        {% endif %}
+        <button class="btn btn-search" type="submit">
+            <i class="fas fa-search"></i>
+        </button>
+    </div>
+</form>
 
             <!-- Menu bên phải -->
             <ul class="navbar-nav">
